@@ -3,6 +3,7 @@ _site
 .sass-cache
 .vagrant
 *.xcf
+avatar-icon_orig.png
 
 # general
 .DS_Store
