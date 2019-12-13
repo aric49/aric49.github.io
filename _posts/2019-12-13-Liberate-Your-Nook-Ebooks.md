@@ -50,7 +50,7 @@ One of the other options available according to my research is a paid Windows ap
 ## Accessing your DRM Key and Importing your eBooks into Calibre
 1. Install Calibre and the DeDRM plugin using the instructions provided by DeDRM GitHub Repo
 
-2. Use sqlite3 client to access the `cchasdata.db` file and retrieve your DRM Key. Note the Key will be 28 characters long and always end in an equals (=) sign. 
+2. Use a sqlite3 client (Download [here](https://sqlite.org/download.html), *side note: my platoform-tools directory contained a sqlite executable. I already had it downloaded, so I opted to use my own sqlite3 installation.*) to access the `cchasdata.db` file and retrieve your DRM Key. Note the Key will be 28 characters long and always end in an equals (=) sign. 
 
 ```
 sqlite3 cchashdata.db
