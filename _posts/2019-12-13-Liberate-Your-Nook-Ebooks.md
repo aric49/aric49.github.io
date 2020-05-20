@@ -8,6 +8,8 @@ gh-badge: [star, fork, follow]
 
 **Disclaimer:** *Please do not use this guide for nefarious purposes. I am publishing this to help ebook owners such as myself who have legally purchased copies of ebooks for personal use.  Do not use this guide for ebooks that do not belong to you. Authors such as myself work really hard to write books and deserve to be paid for their efforts. Don't be a jerk.*
 
+**Update: 5-20-20:** Thanks to input from Jessi Grieser, I have added better steps for Windows users which may differ from Linux/MacOS users. Thanks Jessi!   If anyone else has any suggestions for modifications I can make, do contact me.
+
 DRM or Digital Rights Management, and I have had a hate/hate relationship since I first started consuming digital media in my teenage years. As an adult, most of media recently has been in streaming formats in which I do not have an expectation of ownership or property rights. However, as a yong adult, I began consuming the majority of my books in digital format on a Nook e-reader.  At the time, Nook was a good option for me since I had the option to download backup copies of my books for posterity directly from the Barnes and Nobel website. It appears in recent years that Barnes and Nobel removed this functionality in an effort to lock you more directly into the Nook platform. <BeginRant>As a free and opensource software junkie,this simply will not fly with me.   After all, I legally purchased these books and they are my personal digital property. What I choose to do with my personal property is my business and no entity has any say over what I can and cannot do with my personal property.</EndRant>
 
 I recently started looking into how I can pull my legally purchased ebooks from the Barnes and Nobel Nook platform to take control over my property.  I wanted to share my findings on my blog in case anyone else wishes to do the same. Pulling your ebooks out of Nook is a 2 step process:
@@ -29,13 +31,13 @@ One of the other options available according to my research is a paid Windows ap
 
 2. Once your VM instance has created, open Chrome and manually download the Nook app APK in the virtual device's Chrome browser from [here](https://apkpure.com/nook-read-ebooks-magazines/bn.ereader/versions) - I downloaded version **5.0.2.38**. It will prompt you to install the app once it has been downloaded. **Note:** You need to download the APK manually since the Google Play store is not available on the Google API base image)
 
-3. Sign into your Barnes and Noble Nook account in the virtual Nook app and download the books you wish to retain. 
+3. Sign into your Barnes and Noble Nook account in the virtual Nook app and download the books you wish to retain.  **Windows Users**: you can also use the Nook for PC app to download the books. When you go to load the books into Calibre, the books will be in `C:\Users\~username\AppData\Local\Packages\BarnesNoble.Nook_ahnzqzva31enc\LocalState` and will be numbered .epub files.
 
-4. You should have an Android-SDK directory available in your home directory. My is located under: `~/Android/Sdk/platform-tools` -- In this directory there should be an `abd` executable.
+4. You should have an Android-SDK directory available in your home directory. My is located under: `~/Android/Sdk/platform-tools` -- In this directory there should be an `abd` executable. **Windows Users**: Windows users, this will likely be under  `C:/Users/~username/AppData/Local/Android/Sdk/platform-tools` -  Note that “App Data” is hidden in the system by default; the “View” menu in Windows Explorer allows you to unhide “Hidden Items.” *
 
-5. Start a root shell by executing the command `./adb root`
+5. In your terminal or command prompt window, start a root shell by executing the command `./adb root` - For Windows users use: `.\adb root`
 
-6. Access this shell using:  `./adb shell`.  This should drop you into a root terminal on the virtual device.
+6. Access the shell instance you created using the command:  `./adb shell`. (**Windows Users**: `.\adb shell`)  This should drop you into a root terminal on the virtual device.
 
 ## Access the Android Device and Pull your Nook Data:
 
@@ -50,10 +52,15 @@ One of the other options available according to my research is a paid Windows ap
 ## Accessing your DRM Key and Importing your eBooks into Calibre
 1. Install Calibre and the DeDRM plugin using the instructions provided by DeDRM GitHub Repo
 
-2. Use a sqlite3 client (Download [here](https://sqlite.org/download.html), *side note: my platoform-tools directory contained a sqlite executable. I already had it downloaded, so I opted to use my own sqlite3 installation.*) to access the `cchasdata.db` file and retrieve your DRM Key. Note the Key will be 28 characters long and always end in an equals (=) sign. 
+2. Use a sqlite3 client (Download [here](https://sqlite.org/download.html), *side note: my platform-tools directory contained a sqlite executable. I already had it downloaded, so I opted to use my own sqlite3 installation.*) to access the `cchasdata.db` file and retrieve your DRM Key. Note the Key will be 28 characters long and always end in an equals (=) sign. 
 
+2a. **Open SQLite3 Shell:**
 ```
 sqlite3 cchashdata.db
+```
+
+2b. **At the SQLite3 prompt run the following query to retrieve your key**
+```
 sqlite> select hash from cc_hash_data;
 YOURHASHKEYXXXXXXXXXXXXXXXX=
 ```
