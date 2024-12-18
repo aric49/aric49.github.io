@@ -5,7 +5,8 @@ subtitle: The best way to learn and practice Terraform
 gh-badge: [star, fork, follow]
 ---
  
- # Introduction
+## Introduction
+
  Infrastructure Automation can be an incredibly complex topic and quite intimidating for new developers and engineers who are just getting started. If you are just getting started with learning tools such as Ansible or Terraform, it can be difficult to practice writing code in these languages without talking to "real" infrastructure.  We can gain confidence on what the downstream impact of a code change between Terraform resources might be by simulating it through the use of non-impactful Terraform resources.   
 
  Even if you are an experienced developer, you may wish to want to mock up problems in a local directory using fake Terraform resources to try and rule out variables or bugs that might lurk outside of Terraform.  In the past, (pre Terraform 1.0), one would have to use the `null_resource` provider from Hashicorp to mock up Terraform resources, practice writing Terraform code, or simply create a shim for execution of external scripts or tooling. 
@@ -20,7 +21,8 @@ Terraform v1.10.2
 on linux_amd64
  ```
 
- # Creating Your First `terraform_data` Resource Block
+## Creating Your First `terraform_data` Resource Block
+
 Creating a `terraform_data` resource block requires nothing more than simply creating a `main.tf` file and adding an empty `terraform_data` resource. In a new directory, create a file called, `main.tf` and populate it with the following code: 
 
 **main.tf**:
@@ -103,7 +105,7 @@ Under the `resources: []` section of the state file JSON, you will find a single
 
 Notice the name of the resource is: `resource1`. You can see the `type` is `terraform_data` and it was created from the `terraform.io/builtin` provider. Under the `instances: []` section, you can see some additional attributes such as a unique resource identifier, as well as `input` and `output` values currently set to `null`. These input and output parameters will be what we are going to look at next. 
 
- # Controlling The Terraform Data Block using Variables
+## Controlling The Terraform Data Block using Variables
 
  One of most useful aspects of the `terraform_data` block is the ability for it to accept an input through the resource parameter aptly named, `input`. Since `terraform_data` blocks do not do very much on their own, the value that is passed in through the `input` parameter becomes available to other resources as an `output` attribute that can be referenced. Changes to the `terraform_data` block become dependent on the value of the `input` parameter as well.
 
@@ -213,7 +215,7 @@ Note: You didn't use the -out option to save this plan, so Terraform can't guara
 As you can see in the above output, Terraform has correctly identified that a change has occurred in our `terraform_data.resource2` block because the value of the variable controlling that block has changed. However, not only the input parameter has changed, the `output` attribute has changed as well. This is due to the fact that `terraform_data` blocks automatically generate the value of the `output` attribute based on the value of the `input` parameter.   We can leverage this to simulate implicit resource dependencies in Terraform. If you wish to apply the above change, you may do so now using the `terraform apply` command. 
 
 
- # Outputs and Resource Dependencies 
+## Outputs and Resource Dependencies 
 
  Terraform has a very well thought out dependency system based on resources and the relationships between them. Dependencies can take two forms:  *Implicit* and *Explicit* dependencies.  
 
@@ -293,11 +295,13 @@ Plan: 0 to add, 2 to change, 0 to destroy.
 ```
 Notice that Terraform marks the `output` attribute of `resource2` as **known after apply**.  This is because Terraform technically has to compute this value during the apply phase.  We know the functionality of the resource is to use the same value for the output as what was provided to the input, but Terraform doesn't know that until the apply phase runs.  This is why both the `input` and `output` of `resource3` is marked as **Known after apply**. 
 
- # Conclusion
+## Conclusion
+
 Although simple, it is my hope that this brief tutorial sheds more light on how the `terraform_data` block works. I have used this block numerous times in multiple Terraform projects as a helpful way to not only create resource dependencies, but also as a shim to extend Terraform by executing scripts and additional logic that exists outside of Terraform. The topic of the next lesson will be leveraging `terraform_data` blocks with a shell provisioner to perform in order to extend Terraform in a multitude of different ways. 
 
 Remember:  If this tutorial was helpful to you in anyway, you can show me your appreciation by [Buying Me a Coffee](https://buymeacoffee.com/aric49)
 
 ## Resources: 
+
 1. [Terraform Data Documentation from Hashicorp](https://developer.hashicorp.com/terraform/language/resources/terraform-data)
 2. [Full Examples and Code on GitHub](https://github.com/aric49/automation-tutorials/tree/main/terraform/terraform_data)
